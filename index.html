@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EA3 – Fundamentos de Economía · DuocUC</title>
+
+<!-- MathJax para fórmulas con fracciones -->
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)'], ['$','$']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js"></script>
+
+<!-- Chart.js para gráficos -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<style>
+:root {
+  --navy:   #1B3A6B;
+  --blue:   #2E75B6;
+  --teal:   #007B83;
+  --gold:   #C9A84C;
+  --light:  #D9E8F5;
+  --mint:   #D6EFE8;
+  --yellow: #FFF9C4;
+  --red:    #C00000;
+  --gray:   #F5F5F5;
+  --dgray:  #444;
+  --white:  #fff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 15px;
+  color: #222;
+  background: #f0f4f8;
+  line-height: 1.6;
+}
+
+/* ── Layout ─────────────────────────────── */
+.wrapper { max-width: 1100px; margin: 0 auto; padding: 0 16px 60px; }
+
+/* ── HERO / PORTADA ─────────────────────── */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 60%, var(--teal) 100%);
+  color: white;
+  text-align: center;
+  padding: 60px 32px 50px;
+  border-radius: 0 0 24px 24px;
+  margin-bottom: 36px;
+}
+.hero .badge {
+  display: inline-block;
+  background: rgba(255,255,255,.18);
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: 20px;
+  padding: 4px 18px;
+  font-size: 13px;
+  letter-spacing: 1px;
+  margin-bottom: 18px;
+}
+.hero h1 { font-size: 2.6rem; font-weight: 800; line-height: 1.15; margin-bottom: 10px; }
+.hero h2 { font-size: 1.35rem; font-weight: 400; opacity: .88; margin-bottom: 20px; }
+.hero p  { font-size: .95rem; opacity: .75; max-width: 680px; margin: 0 auto; }
+
+/* ── Navegación rápida ──────────────────── */
+nav.toc {
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(0,0,0,.08);
+  padding: 24px 28px;
+  margin-bottom: 32px;
+}
+nav.toc h3 { color: var(--navy); font-size: 1rem; margin-bottom: 14px; text-transform: uppercase; letter-spacing: .6px; }
+nav.toc ol { padding-left: 20px; }
+nav.toc li { margin: 5px 0; }
+nav.toc a  { color: var(--blue); text-decoration: none; font-size: .95rem; }
+nav.toc a:hover { text-decoration: underline; }
+
+/* ── Módulos ────────────────────────────── */
+section.module {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 18px rgba(0,0,0,.07);
+  padding: 36px 40px;
+  margin-bottom: 36px;
+}
+
+.module-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 3px solid var(--light);
+}
+.module-number {
+  background: var(--navy);
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 800;
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.module-title h2 { color: var(--navy); font-size: 1.5rem; }
+.module-title p  { color: var(--teal); font-size: .9rem; margin-top: 2px; }
+
+h3 { color: var(--blue); font-size: 1.15rem; margin: 24px 0 10px; }
+h4 { color: var(--teal); font-size: 1rem; margin: 18px 0 8px; }
+p  { margin-bottom: 10px; color: var(--dgray); }
+
+/* ── Fórmulas ───────────────────────────── */
+.formula-box {
+  background: linear-gradient(135deg, #FFF8E1, #FFFDE7);
+  border-left: 5px solid var(--gold);
+  border-radius: 0 10px 10px 0;
+  padding: 16px 22px;
+  margin: 14px 0;
+  overflow-x: auto;
+}
+.formula-box .label {
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+/* ── Callouts ───────────────────────────── */
+.callout {
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 16px 0;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.callout.tip   { background: var(--yellow); border-left: 4px solid #F0C030; }
+.callout.info  { background: var(--light);  border-left: 4px solid var(--blue); }
+.callout.warn  { background: #FDDEDE;       border-left: 4px solid var(--red); }
+.callout.mint  { background: var(--mint);   border-left: 4px solid var(--teal); }
+.callout-icon  { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+.callout-body  { font-size: .93rem; color: #333; }
+.callout-body strong { display: block; margin-bottom: 3px; }
+
+/* ── Tablas ─────────────────────────────── */
+.tbl-wrap { overflow-x: auto; margin: 16px 0; border-radius: 10px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .9rem;
+}
+th {
+  background: var(--navy);
+  color: white;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+}
+td {
+  padding: 9px 14px;
+  border-bottom: 1px solid #e8ecf0;
+  vertical-align: top;
+}
+tr:nth-child(even) td { background: var(--gray); }
+tr:hover td { background: #edf4fb; }
+.td-good  { background: #D5E8D4 !important; font-weight: 600; }
+.td-bad   { background: #FDDEDE !important; font-weight: 600; }
+.td-neu   { background: #FFF9C4 !important; }
+.td-teal  { background: var(--mint) !important; font-weight: 600; }
+
+/* ── Gráficos ───────────────────────────── */
+.chart-section {
+  background: var(--gray);
+  border-radius: 14px;
+  padding: 24px;
+  margin: 24px 0;
+}
+.chart-section h4 {
+  color: var(--navy);
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+.chart-section p.chart-desc {
+  font-size: .82rem;
+  color: #666;
+  margin-bottom: 14px;
+}
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin: 22px 0;
+}
+.chart-grid.single { grid-template-columns: 1fr; }
+.chart-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 8px rgba(0,0,0,.07);
+}
+.chart-card h4 { margin-top: 0; }
+.chart-card canvas { max-height: 280px; }
+
+/* ── SVG curvas manuales ────────────────── */
+.svg-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 8px rgba(0,0,0,.07);
+}
+.svg-card h4 { margin-top: 0; color: var(--navy); }
+.svg-card p.desc { font-size: .82rem; color: #666; margin-top: 8px; }
+
+/* ── Pasos ──────────────────────────────── */
+.steps { counter-reset: step; padding: 0; list-style: none; margin: 14px 0; }
+.steps li {
+  counter-increment: step;
+  display: flex;
+  gap: 14px;
+  margin-bottom: 14px;
+  align-items: flex-start;
+}
+.steps li::before {
+  content: counter(step);
+  background: var(--blue);
+  color: white;
+  font-weight: 700;
+  font-size: .85rem;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.steps li p { margin: 0; }
+
+/* ── Bullet list ────────────────────────── */
+ul.bullets { padding-left: 22px; margin: 10px 0; }
+ul.bullets li { margin: 6px 0; color: var(--dgray); }
+
+/* ── Badges ─────────────────────────────── */
+.badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: .8rem;
+  font-weight: 600;
+}
+.badge.green  { background: #D5E8D4; color: #1B6B2B; }
+.badge.red    { background: #FDDEDE; color: #8B0000; }
+.badge.blue   { background: var(--light); color: var(--navy); }
+.badge.gold   { background: #FFF3CD; color: #7B5800; }
+.badge.teal   { background: var(--mint); color: #005560; }
+
+/* ── Ejercicio resuelto ─────────────────── */
+.ejercicio {
+  border: 2px solid var(--blue);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+.ejercicio-header {
+  background: var(--blue);
+  color: white;
+  padding: 10px 18px;
+  font-weight: 700;
+  font-size: .95rem;
+}
+.ejercicio-body { padding: 18px 20px; }
+
+/* ── Checklist ──────────────────────────── */
+.checklist { list-style: none; padding: 0; }
+.checklist li {
+  padding: 8px 12px;
+  margin: 6px 0;
+  background: var(--gray);
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: .92rem;
+}
+.checklist li::before {
+  content: "☐";
+  font-size: 1.1rem;
+  color: var(--blue);
+}
+
+/* ── Plan de estudio ────────────────────── */
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+  margin: 18px 0;
+}
+.plan-card {
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+.plan-card .day  { font-weight: 800; font-size: 1rem; margin-bottom: 6px; }
+.plan-card .task { font-size: .82rem; line-height: 1.4; }
+.plan-card.c1 { background: #E8F4FD; border: 2px solid var(--blue); }
+.plan-card.c2 { background: var(--mint); border: 2px solid var(--teal); }
+.plan-card.c3 { background: var(--yellow); border: 2px solid #F0C030; }
+.plan-card.c4 { background: #F3E8FF; border: 2px solid #9B59B6; }
+.plan-card.c5 { background: #FDDEDE; border: 2px solid var(--red); }
+.plan-card.c6 { background: var(--mint); border: 2px solid var(--teal); }
+
+/* ── Footer ─────────────────────────────── */
+footer {
+  text-align: center;
+  color: #888;
+  font-size: .82rem;
+  margin-top: 40px;
+  padding: 20px;
+}
+
+@media (max-width: 700px) {
+  .chart-grid { grid-template-columns: 1fr; }
+  section.module { padding: 22px 18px; }
+  .hero h1 { font-size: 1.8rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<div class="hero">
+  <div class="badge">DuocUC · Escuela de Administración y Negocios</div>
+  <h1>Fundamentos de Economía</h1>
+  <h2>Experiencia de Aprendizaje 3 · Precios, Mercado &amp; Emprendimiento</h2>
+  <p>Guía completa de estudio con gráficos interactivos, fórmulas en fracciones, ejercicios resueltos y estrategia metacognitiva para sacar 7 en tu prueba del sábado.</p>
+</div>
+
+<div class="wrapper">
+
+<!-- ══ NAVEGACIÓN ══════════════════════════ -->
+<nav class="toc">
+  <h3>📋 Índice de contenidos</h3>
+  <ol>
+    <li><a href="#meta">Metacognición — Cómo estudiar para sacar 7</a></li>
+    <li><a href="#precios">Módulo 1 — Teoría de Precios</a></li>
+    <li><a href="#pe">Módulo 2 — Punto de Equilibrio Empresarial</a></li>
+    <li><a href="#elasticidad">Módulo 3 — Elasticidad Precio</a></li>
+    <li><a href="#estructuras">Módulo 4 — Estructuras de Mercado</a></li>
+    <li><a href="#emprendimiento">Módulo 5 — Emprendimiento e Innovación</a></li>
+    <li><a href="#notco">Caso NotCo — Análisis completo</a></li>
+    <li><a href="#formulas">Hoja de Fórmulas Rápidas</a></li>
+    <li><a href="#plan">Plan de estudio para el sábado</a></li>
+  </ol>
+</nav>
+
+
+<!-- ══════════════════════════════════════════
+     0. METACOGNICIÓN
+══════════════════════════════════════════ -->
+<section class="module" id="meta">
+  <div class="module-header">
+    <div class="module-number">0</div>
+    <div class="module-title">
+      <h2>Metacognición — Cómo estudiar para sacar 7</h2>
+      <p>Aprende a aprender antes de estudiar</p>
+    </div>
+  </div>
+
+  <p>La <strong>metacognición</strong> es pensar sobre tu propio proceso de aprendizaje. Estudiar muchas horas no garantiza nada; estudiar <em>correctamente</em> sí. Aquí el método científicamente probado:</p>
+
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h4>🧠 Las 4 técnicas más efectivas</h4>
+      <canvas id="chartMeta"></canvas>
+    </div>
+    <div>
+      <div class="callout tip">
+        <div class="callout-icon">⭐</div>
+        <div class="callout-body">
+          <strong>Recuperación activa</strong>
+          Cierra la guía y escribe de memoria las fórmulas. Cada vez que recuerdas algo refuerzas la red neuronal.
+        </div>
+      </div>
+      <div class="callout tip">
+        <div class="callout-icon">⏱️</div>
+        <div class="callout-body">
+          <strong>Práctica espaciada (Pomodoro)</strong>
+          25 min estudio → 5 min descanso. Tres bloques el viernes, repaso liviano el sábado temprano.
+        </div>
+      </div>
+      <div class="callout tip">
+        <div class="callout-icon">🗣️</div>
+        <div class="callout-body">
+          <strong>Elaboración</strong>
+          Explica el concepto en voz alta como si le enseñaras a alguien. Usa ejemplos reales chilenos.
+        </div>
+      </div>
+      <div class="callout tip">
+        <div class="callout-icon">🔀</div>
+        <div class="callout-body">
+          <strong>Práctica intercalada</strong>
+          No estudies un solo tema en bloque. Alterna: Precios → PE → Elasticidad → Estructuras.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Errores frecuentes que cuestan nota</h3>
+  <div class="callout warn">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <ul class="bullets">
+        <li>Confundir <em>desplazamiento de la curva</em> vs. <em>movimiento a lo largo de la curva</em></li>
+        <li>Olvidar el signo negativo en ε de demanda — siempre usa el valor absoluto |ε| para interpretar</li>
+        <li>No escribir el paso a paso en cálculos (los pasos también valen puntos)</li>
+        <li>Confundir oligopolio con monopolio</li>
+        <li>Calcular el PE en pesos sin calcular primero las unidades</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     1. TEORÍA DE PRECIOS
+══════════════════════════════════════════ -->
+<section class="module" id="precios">
+  <div class="module-header">
+    <div class="module-number">1</div>
+    <div class="module-title">
+      <h2>Módulo 1 — Teoría de Precios</h2>
+      <p>Oferta, demanda y equilibrio de mercado</p>
+    </div>
+  </div>
+
+  <p>El <strong>precio</strong> es el valor monetario que se asigna a un bien o servicio. Actúa como <strong>señal</strong> (informa sobre escasez), <strong>asignador</strong> (dirige recursos) e <strong>incentivo</strong> (motiva a producir más o menos).</p>
+
+  <h3>1.1 La Curva de Demanda</h3>
+  <div class="formula-box">
+    <div class="label">Ley de la Demanda</div>
+    $$Q_d = f\left(P_x,\; P_{\text{otros}},\; I,\; G,\; \text{Expectativas}\right)$$
+    <p style="margin-top:8px;font-size:.88rem;color:#666">A mayor precio → menor cantidad demandada. Curva con <strong>pendiente negativa</strong>.</p>
+  </div>
+
+  <div class="chart-grid">
+    <div class="svg-card">
+      <h4>📉 Curva de Demanda — Pendiente Negativa</h4>
+      <svg viewBox="0 0 320 260" style="width:100%;max-height:240px">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#444"/>
+          </marker>
+        </defs>
+        <!-- ejes -->
+        <line x1="40" y1="230" x2="290" y2="230" stroke="#444" stroke-width="2" marker-end="url(#arr)"/>
+        <line x1="40" y1="230" x2="40" y2="20"  stroke="#444" stroke-width="2" marker-end="url(#arr)"/>
+        <!-- etiquetas ejes -->
+        <text x="295" y="234" font-size="13" fill="#444">Q</text>
+        <text x="28"  y="16"  font-size="13" fill="#444">P</text>
+        <!-- curva demanda -->
+        <path d="M 60,40 Q 170,140 280,215" stroke="#2E75B6" stroke-width="3" fill="none"/>
+        <text x="230" y="170" font-size="13" font-weight="700" fill="#2E75B6">D</text>
+        <!-- puntos de ejemplo -->
+        <circle cx="90"  cy="68"  r="5" fill="#2E75B6"/>
+        <circle cx="180" cy="148" r="5" fill="#2E75B6"/>
+        <circle cx="255" cy="205" r="5" fill="#2E75B6"/>
+        <!-- líneas punteadas punto B -->
+        <line x1="40" y1="148" x2="180" y2="148" stroke="#aaa" stroke-dasharray="4,3" stroke-width="1.2"/>
+        <line x1="180" y1="230" x2="180" y2="148" stroke="#aaa" stroke-dasharray="4,3" stroke-width="1.2"/>
+        <text x="24" y="152" font-size="11" fill="#666">P*</text>
+        <text x="173" y="244" font-size="11" fill="#666">Q*</text>
+        <!-- flecha indicativa -->
+        <text x="80" y="195" font-size="11" fill="#1B3A6B">↘ P sube → Q baja</text>
+      </svg>
+      <p class="desc">Relación inversa P–Q. El punto (P*, Q*) es el equilibrio del consumidor. Los desplazamientos ocurren por factores distintos al precio.</p>
+    </div>
+
+    <div class="svg-card">
+      <h4>↔️ Desplazamiento de la Curva de Demanda</h4>
+      <svg viewBox="0 0 320 260" style="width:100%;max-height:240px">
+        <defs>
+          <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#444"/>
+          </marker>
+          <marker id="arrG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#27AE60"/>
+          </marker>
+          <marker id="arrR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#C00000"/>
+          </marker>
+        </defs>
+        <line x1="40" y1="230" x2="290" y2="230" stroke="#444" stroke-width="2" marker-end="url(#arr2)"/>
+        <line x1="40" y1="230" x2="40" y2="20"  stroke="#444" stroke-width="2" marker-end="url(#arr2)"/>
+        <text x="295" y="234" font-size="13" fill="#444">Q</text>
+        <text x="28"  y="16"  font-size="13" fill="#444">P</text>
+        <!-- D original -->
+        <path d="M 80,40 Q 180,135 275,210" stroke="#2E75B6" stroke-width="2.5" fill="none"/>
+        <text x="240" y="165" font-size="13" font-weight="700" fill="#2E75B6">D₀</text>
+        <!-- D aumenta (derecha) -->
+        <path d="M 130,40 Q 220,130 295,200" stroke="#27AE60" stroke-width="2.5" fill="none" stroke-dasharray="7,3"/>
+        <text x="272" y="150" font-size="13" font-weight="700" fill="#27AE60">D₁↑</text>
+        <!-- D disminuye (izquierda) -->
+        <path d="M 45,55 Q 125,145 220,215" stroke="#C00000" stroke-width="2.5" fill="none" stroke-dasharray="7,3"/>
+        <text x="55" y="145" font-size="13" font-weight="700" fill="#C00000">D₂↓</text>
+        <!-- Flechas -->
+        <line x1="165" y1="120" x2="205" y2="100" stroke="#27AE60" stroke-width="2" marker-end="url(#arrG)"/>
+        <line x1="145" y1="130" x2="105" y2="150" stroke="#C00000" stroke-width="2" marker-end="url(#arrR)"/>
+        <text x="58" y="25" font-size="10" fill="#27AE60">↑Ingreso, sube sustituto</text>
+        <text x="58" y="38" font-size="10" fill="#C00000">↓Ingreso, sube complementario</text>
+      </svg>
+      <p class="desc">D₁: demanda aumenta (curva va a la derecha). D₂: demanda disminuye (curva va a la izquierda). Causas: cambios en ingreso, preferencias, precios relacionados, expectativas.</p>
+    </div>
+  </div>
+
+  <h3>1.2 La Curva de Oferta</h3>
+  <div class="formula-box">
+    <div class="label">Función de Oferta</div>
+    $$Q_s = f\left(P_x,\; P_{\text{insumos}},\; \text{Tecnología},\; \text{Expectativas},\; \text{Costos}\right)$$
+    <p style="margin-top:8px;font-size:.88rem;color:#666">A mayor precio → mayor cantidad ofrecida. Curva con <strong>pendiente positiva</strong>.</p>
+  </div>
+
+  <div class="chart-grid">
+    <div class="svg-card">
+      <h4>📈 Curva de Oferta — Pendiente Positiva</h4>
+      <svg viewBox="0 0 320 260" style="width:100%;max-height:240px">
+        <defs>
+          <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#444"/>
+          </marker>
+        </defs>
+        <line x1="40" y1="230" x2="290" y2="230" stroke="#444" stroke-width="2" marker-end="url(#arr3)"/>
+        <line x1="40" y1="230" x2="40" y2="20"  stroke="#444" stroke-width="2" marker-end="url(#arr3)"/>
+        <text x="295" y="234" font-size="13" fill="#444">Q</text>
+        <text x="28"  y="16"  font-size="13" fill="#444">P</text>
+        <!-- curva oferta -->
+        <path d="M 60,215 Q 155,120 275,45" stroke="#E67E22" stroke-width="3" fill="none"/>
+        <text x="245" y="58" font-size="13" font-weight="700" fill="#E67E22">S</text>
+        <!-- puntos -->
+        <circle cx="90"  cy="193" r="5" fill="#E67E22"/>
+        <circle cx="180" cy="120" r="5" fill="#E67E22"/>
+        <circle cx="255" cy="60"  r="5" fill="#E67E22"/>
+        <!-- líneas punteadas -->
+        <line x1="40"  y1="120" x2="180" y2="120" stroke="#aaa" stroke-dasharray="4,3" stroke-width="1.2"/>
+        <line x1="180" y1="230" x2="180" y2="120" stroke="#aaa" stroke-dasharray="4,3" stroke-width="1.2"/>
+        <text x="24" y="124" font-size="11" fill="#666">P*</text>
+        <text x="173" y="244" font-size="11" fill="#666">Q*</text>
+        <text x="85" y="80" font-size="11" fill="#1B3A6B">↗ P sube → Q sube</text>
+      </svg>
+      <p class="desc">Relación directa P–Q. A mayor precio, más rentable producir, por lo que los oferentes aumentan la cantidad.</p>
+    </div>
+
+    <div class="svg-card">
+      <h4>🎯 Equilibrio de Mercado (Helados)</h4>
+      <svg viewBox="0 0 320 270" style="width:100%;max-height:250px">
+        <defs>
+          <marker id="arr4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#444"/>
+          </marker>
+        </defs>
+        <line x1="40" y1="235" x2="295" y2="235" stroke="#444" stroke-width="2" marker-end="url(#arr4)"/>
+        <line x1="40" y1="235" x2="40" y2="15"  stroke="#444" stroke-width="2" marker-end="url(#arr4)"/>
+        <text x="298" y="238" font-size="11" fill="#444">Q (vasos)</text>
+        <text x="10"  y="13"  font-size="11" fill="#444">P ($)</text>
+        <!-- demanda -->
+        <path d="M 65,30 Q 175,135 280,220" stroke="#2E75B6" stroke-width="2.5" fill="none"/>
+        <text x="248" y="175" font-size="12" font-weight="700" fill="#2E75B6">D</text>
+        <!-- oferta -->
+        <path d="M 65,220 Q 165,130 275,35" stroke="#E67E22" stroke-width="2.5" fill="none"/>
+        <text x="250" y="55" font-size="12" font-weight="700" fill="#E67E22">S</text>
+        <!-- punto equilibrio -->
+        <circle cx="170" cy="128" r="7" fill="#1B3A6B"/>
+        <text x="176" y="120" font-size="11" font-weight="700" fill="#1B3A6B">E</text>
+        <!-- líneas punteadas -->
+        <line x1="40"  y1="128" x2="170" y2="128" stroke="#1B3A6B" stroke-dasharray="4,3"/>
+        <line x1="170" y1="235" x2="170" y2="128" stroke="#1B3A6B" stroke-dasharray="4,3"/>
+        <text x="44"  y="124" font-size="11" fill="#1B3A6B" font-weight="700">$2.00</text>
+        <text x="160" y="248" font-size="11" fill="#1B3A6B" font-weight="700">7</text>
+        <!-- precio alto - excedente -->
+        <line x1="40" y1="85" x2="290" y2="85" stroke="#C00000" stroke-dasharray="6,3" stroke-width="1.5"/>
+        <text x="44" y="81" font-size="10" fill="#C00000">$2.50 → Excedente (S&gt;D)</text>
+        <!-- precio bajo - escasez -->
+        <line x1="40" y1="168" x2="290" y2="168" stroke="#27AE60" stroke-dasharray="6,3" stroke-width="1.5"/>
+        <text x="44" y="182" font-size="10" fill="#27AE60">$1.50 → Escasez (D&gt;S)</text>
+      </svg>
+      <p class="desc">El equilibrio (E) se da donde S=D: P*=$2.00 y Q*=7 vasos. Por encima hay excedente; por debajo, escasez.</p>
+    </div>
+  </div>
+
+  <h3>1.3 Tabla de Desplazamientos</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Factor</th><th>Efecto sobre curva</th><th>Dirección</th><th>Ejemplo Chile</th></tr></thead>
+      <tbody>
+        <tr><td><strong>↑ Ingreso disponible</strong></td><td>Demanda aumenta</td><td class="td-good">→ Derecha</td><td>Reajuste sueldo mínimo 2024 → más consumo</td></tr>
+        <tr><td><strong>↑ Precio bien sustituto</strong></td><td>Demanda aumenta</td><td class="td-good">→ Derecha</td><td>Sube precio pollo → más demanda carne vacuno</td></tr>
+        <tr><td><strong>↑ Precio bien complementario</strong></td><td>Demanda disminuye</td><td class="td-bad">← Izquierda</td><td>Sube bencina → menos demanda autos a combustión</td></tr>
+        <tr><td><strong>↓ Costos de producción</strong></td><td>Oferta aumenta</td><td class="td-good">→ Derecha</td><td>Energía solar barata → más producción agroindustria</td></tr>
+        <tr><td><strong>↑ Tecnología</strong></td><td>Oferta aumenta</td><td class="td-good">→ Derecha</td><td>Automatización en minería → más cobre</td></tr>
+        <tr><td><strong>↑ Costos laborales</strong></td><td>Oferta disminuye</td><td class="td-bad">← Izquierda</td><td>Alza sueldo mínimo → presión costos PYMES</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     2. PUNTO DE EQUILIBRIO
+══════════════════════════════════════════ -->
+<section class="module" id="pe">
+  <div class="module-header">
+    <div class="module-number">2</div>
+    <div class="module-title">
+      <h2>Módulo 2 — Punto de Equilibrio Empresarial</h2>
+      <p>La herramienta de viabilidad más importante para un emprendedor</p>
+    </div>
+  </div>
+
+  <p>El <strong>Punto de Equilibrio (PE)</strong> es el nivel de producción/ventas donde los ingresos totales igualan a los costos totales. Sin pérdidas ni ganancias. Por encima → utilidad; por debajo → pérdida.</p>
+
+  <h3>2.1 Fórmulas centrales</h3>
+  <div class="formula-box">
+    <div class="label">Punto de Equilibrio en Unidades</div>
+    $$PE_{(unidades)} = \frac{CF}{PVU - CVU} = \frac{\text{Costos Fijos}}{\text{Margen de Contribución Unitario}}$$
+  </div>
+  <div class="formula-box">
+    <div class="label">Punto de Equilibrio en Ingresos ($)</div>
+    $$PE_{(\$)} = PE_{(unidades)} \times PVU$$
+  </div>
+  <div class="formula-box">
+    <div class="label">Margen de Contribución Unitario</div>
+    $$MC = PVU - CVU$$
+  </div>
+
+  <h3>2.2 Gráfico del Punto de Equilibrio</h3>
+  <div class="chart-section">
+    <p class="chart-desc">El PE es la intersección de la línea de Ingresos Totales y la línea de Costos Totales. A la izquierda del PE → pérdida; a la derecha → ganancia.</p>
+    <div class="chart-card" style="max-width:700px;margin:0 auto">
+      <canvas id="chartPE"></canvas>
+    </div>
+  </div>
+
+  <h3>2.3 Ejercicio 1 Resuelto — Panadería El Buen Pan</h3>
+  <div class="ejercicio">
+    <div class="ejercicio-header">📝 Ejercicio 1 — Datos: CF=$5.000 | PVU=$2.00 | CVU=$0.80</div>
+    <div class="ejercicio-body">
+      <ol class="steps">
+        <li><p><strong>Calcular el Margen de Contribución:</strong></p>
+          <div class="formula-box">$$MC = PVU - CVU = \$2{,}00 - \$0{,}80 = \$1{,}20 \text{ por pan}$$</div></li>
+        <li><p><strong>Calcular PE en unidades:</strong></p>
+          <div class="formula-box">$$PE = \frac{\$5.000}{\$1{,}20} = 4.167 \text{ panes al mes}$$</div></li>
+        <li><p><strong>Calcular PE en ingresos:</strong></p>
+          <div class="formula-box">$$PE_{(\$)} = 4.167 \times \$2{,}00 = \$8.333$$</div></li>
+      </ol>
+      <div class="callout mint"><div class="callout-icon">✅</div><div class="callout-body"><strong>Conclusión:</strong> La panadería necesita vender al menos 4.167 panes para no perder dinero. El pan 4.168 comienza a generar utilidad.</div></div>
+    </div>
+  </div>
+
+  <h3>2.4 Ejercicio 2 Resuelto — Mesas de Oficina (del ramo)</h3>
+  <div class="ejercicio">
+    <div class="ejercicio-header">📝 Ejercicio 2 — Datos: PVU=$200 | CVU=$80 | CF=$24.000/mes</div>
+    <div class="ejercicio-body">
+      <div class="formula-box">$$PE_{base} = \frac{\$24.000}{\$200 - \$80} = \frac{\$24.000}{\$120} = 200 \text{ mesas}$$</div>
+      <div class="formula-box">$$PE_{(\$)} = 200 \times \$200 = \$40.000$$</div>
+      <p><strong>¿Qué pasa si CF suben a $30.000?</strong></p>
+      <div class="formula-box">$$PE_{nuevo} = \frac{\$30.000}{\$120} = 250 \text{ mesas} \quad (+50 \text{ mesas adicionales})$$</div>
+    </div>
+  </div>
+
+  <h3>2.5 Ejercicio 3 — Comparación de Opciones Estratégicas</h3>
+  <div class="ejercicio">
+    <div class="ejercicio-header">📝 Ejercicio 3 — ¿Qué reduce más el PE? ¿Bajar precio o bajar costo variable?</div>
+    <div class="ejercicio-body">
+      <p><strong>Opción A:</strong> Reducir PVU a $180</p>
+      <div class="formula-box">$$PE_A = \frac{\$24.000}{\$180 - \$80} = \frac{\$24.000}{\$100} = 240 \text{ mesas} \uparrow \text{ PEOR}$$</div>
+      <p><strong>Opción B:</strong> Reducir CVU a $70 (mantiene PVU=$200)</p>
+      <div class="formula-box">$$PE_B = \frac{\$24.000}{\$200 - \$70} = \frac{\$24.000}{\$130} \approx 185 \text{ mesas} \downarrow \text{ MEJOR}$$</div>
+      <div class="callout tip"><div class="callout-icon">💡</div><div class="callout-body"><strong>Conclusión clave:</strong> Reducir el costo variable mejora el margen de contribución ($120→$130), lo que reduce el PE. Bajar el precio hace lo contrario: empeora el MC ($120→$100) y obliga a vender MÁS unidades para cubrir los costos fijos.</div></div>
+
+      <div class="chart-card" style="margin-top:16px;">
+        <canvas id="chartPEOpciones"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     3. ELASTICIDAD
+══════════════════════════════════════════ -->
+<section class="module" id="elasticidad">
+  <div class="module-header">
+    <div class="module-number">3</div>
+    <div class="module-title">
+      <h2>Módulo 3 — Elasticidad Precio</h2>
+      <p>¿Cuánto reacciona la demanda ante cambios de precio?</p>
+    </div>
+  </div>
+
+  <p>La <strong>elasticidad precio de la demanda</strong> mide la sensibilidad de los consumidores ante cambios en el precio. Es la herramienta clave para decidir si subir o bajar el precio aumentará o disminuirá los ingresos.</p>
+
+  <h3>3.1 Fórmula General</h3>
+  <div class="formula-box">
+    <div class="label">Elasticidad Precio de la Demanda</div>
+    $$\varepsilon = \frac{\%\Delta Q_d}{\%\Delta P} = \frac{\dfrac{Q_2 - Q_1}{Q_1}}{\dfrac{P_2 - P_1}{P_1}}$$
+  </div>
+  <div class="callout warn"><div class="callout-icon">⚠️</div><div class="callout-body"><strong>Importante:</strong> La ε de demanda SIEMPRE es negativa (relación inversa). Para interpretar, usa el <strong>valor absoluto |ε|</strong>.</div></div>
+
+  <h3>3.2 Tipos de Elasticidad</h3>
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h4>📊 Curvas según tipo de elasticidad</h4>
+      <canvas id="chartElasticidad"></canvas>
+    </div>
+    <div class="tbl-wrap" style="margin:0">
+      <table>
+        <thead><tr><th>Tipo</th><th>Condición</th><th>¿Qué significa?</th></tr></thead>
+        <tbody>
+          <tr class="td-good"><td><strong>Elástica</strong></td><td><strong>|ε| &gt; 1</strong></td><td>La cantidad cambia MÁS que el precio</td></tr>
+          <tr><td><strong>Inelástica</strong></td><td><strong>|ε| &lt; 1</strong></td><td>La cantidad cambia MENOS que el precio</td></tr>
+          <tr class="td-neu"><td><strong>Unitaria</strong></td><td><strong>|ε| = 1</strong></td><td>Cambian en la misma proporción</td></tr>
+          <tr class="td-good"><td><strong>Perf. Elástica</strong></td><td><strong>|ε| = ∞</strong></td><td>Curva horizontal — cualquier alza destruye la demanda</td></tr>
+          <tr><td><strong>Perf. Inelástica</strong></td><td><strong>|ε| = 0</strong></td><td>Curva vertical — el precio NO afecta la cantidad</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3>3.3 Elasticidad e Ingresos Totales — La decisión de precio</h3>
+  <div class="formula-box">
+    <div class="label">Ingresos Totales</div>
+    $$IT = P \times Q$$
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Tipo</th><th>Si SUBO el precio...</th><th>Si BAJO el precio...</th><th>Estrategia</th></tr></thead>
+      <tbody>
+        <tr><td class="td-good"><strong>ELÁSTICA |ε|&gt;1</strong></td><td class="td-bad">IT BAJA (pierdes muchos clientes)</td><td class="td-good">IT SUBE (ganas muchos clientes)</td><td>→ Bajar precio para maximizar IT</td></tr>
+        <tr><td class="td-teal"><strong>INELÁSTICA |ε|&lt;1</strong></td><td class="td-good">IT SUBE (clientes no se van)</td><td class="td-bad">IT BAJA (clientes no llegan más)</td><td>→ Subir precio para maximizar IT</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="chart-section">
+    <p class="chart-desc">Efecto del precio sobre ingresos totales según el tipo de elasticidad</p>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h4>💰 IT vs Precio — Demanda Elástica vs Inelástica</h4>
+        <canvas id="chartIT"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>🧮 Comparación IT — Ejercicios del ramo</h4>
+        <canvas id="chartITComp"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <h3>3.4 Ejercicio Resuelto — Zapatillas (Inelástico)</h3>
+  <div class="ejercicio">
+    <div class="ejercicio-header">📝 Zapatillas: P₁=$50, Q₁=10.000, ε=-0,8 → ¿Subir a $55?</div>
+    <div class="ejercicio-body">
+      <ol class="steps">
+        <li><p><strong>Cambio porcentual en precio:</strong></p>
+          <div class="formula-box">$$\%\Delta P = \frac{\$55 - \$50}{\$50} = +10\%$$</div></li>
+        <li><p><strong>Cambio porcentual en cantidad (usando ε):</strong></p>
+          <div class="formula-box">$$\%\Delta Q = \varepsilon \times \%\Delta P = (-0{,}8) \times 10\% = -8\%$$</div></li>
+        <li><p><strong>Nueva cantidad:</strong></p>
+          <div class="formula-box">$$Q_2 = 10.000 \times (1 - 0{,}08) = 9.200 \text{ pares}$$</div></li>
+        <li><p><strong>Comparar Ingresos Totales:</strong></p>
+          <div class="formula-box">$$IT_1 = \$50 \times 10.000 = \$500.000$$</div>
+          <div class="formula-box">$$IT_2 = \$55 \times 9.200 = \$506.000 \quad \Rightarrow \quad \Delta IT = +\$6.000$$</div></li>
+      </ol>
+      <div class="callout mint"><div class="callout-icon">✅</div><div class="callout-body"><strong>Conclusión:</strong> Como |ε|=0,8 &lt; 1 → Demanda INELÁSTICA. Subir precio AUMENTA los ingresos. La empresa SÍ debe subir el precio.</div></div>
+    </div>
+  </div>
+
+  <h3>3.5 Ejercicio Resuelto — Restaurante (Elástico)</h3>
+  <div class="ejercicio">
+    <div class="ejercicio-header">📝 Restaurante: P₁=$10, Q₁=500, ε=-1,5 → ¿Bajar a $9?</div>
+    <div class="ejercicio-body">
+      <ol class="steps">
+        <li><p><strong>Cambio porcentual en precio:</strong></p>
+          <div class="formula-box">$$\%\Delta P = \frac{\$9 - \$10}{\$10} = -10\%$$</div></li>
+        <li><p><strong>Cambio en cantidad:</strong></p>
+          <div class="formula-box">$$\%\Delta Q = (-1{,}5) \times (-10\%) = +15\%$$</div></li>
+        <li><p><strong>Nueva cantidad:</strong></p>
+          <div class="formula-box">$$Q_2 = 500 \times (1 + 0{,}15) = 575 \text{ platos}$$</div></li>
+        <li><p><strong>Comparar IT:</strong></p>
+          <div class="formula-box">$$IT_1 = \$10 \times 500 = \$5.000$$</div>
+          <div class="formula-box">$$IT_2 = \$9 \times 575 = \$5.175 \quad \Rightarrow \quad \Delta IT = +\$175$$</div></li>
+      </ol>
+      <div class="callout mint"><div class="callout-icon">✅</div><div class="callout-body"><strong>Conclusión:</strong> Como |ε|=1,5 &gt; 1 → Demanda ELÁSTICA. Bajar precio AUMENTA los ingresos. El restaurante SÍ debe bajar el precio.</div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     4. ESTRUCTURAS DE MERCADO
+══════════════════════════════════════════ -->
+<section class="module" id="estructuras">
+  <div class="module-header">
+    <div class="module-number">4</div>
+    <div class="module-title">
+      <h2>Módulo 4 — Estructuras de Mercado</h2>
+      <p>Las reglas del juego competitivo en cada industria</p>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h4>🏭 Comparación de estructuras — Poder de mercado</h4>
+      <canvas id="chartEstructuras"></canvas>
+    </div>
+    <div class="chart-card">
+      <h4>🚧 Barreras de entrada por estructura</h4>
+      <canvas id="chartBarreras"></canvas>
+    </div>
+  </div>
+
+  <h3>4.1 Tabla Comparativa Completa</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Estructura</th><th>N° Empresas</th><th>Tipo de producto</th><th>Poder de precio</th><th>Barreras entrada</th><th>Utilidad LP</th><th>Ejemplos Chile</th></tr></thead>
+      <tbody>
+        <tr class="td-good">
+          <td><strong>Competencia Perfecta</strong></td><td>Muchas</td><td>Homogéneo</td>
+          <td>Ninguno (precio-aceptantes)</td><td>Ninguna</td><td>Normal (=0)</td>
+          <td>La Vega (verduras), trigo, maíz</td>
+        </tr>
+        <tr>
+          <td><strong>Competencia Monopolística</strong></td><td>Muchas</td><td>Diferenciado</td>
+          <td>Alguno (por diferenciación)</td><td>Bajas</td><td>Normal (=0)</td>
+          <td>Restaurantes, cafeterías, ropa, NotMayo</td>
+        </tr>
+        <tr class="td-neu">
+          <td><strong>Oligopolio</strong></td><td>Pocas (2–10)</td><td>Homogéneo/Diferenciado</td>
+          <td>Considerable (interdependencia)</td><td>Altas</td><td>Positiva</td>
+          <td>Telefonía, supermercados, aerolíneas, banca</td>
+        </tr>
+        <tr class="td-bad">
+          <td><strong>Monopolio</strong></td><td>Una sola</td><td>Único</td>
+          <td>Total (fija el precio)</td><td>Muy altas</td><td>Positiva alta</td>
+          <td>Aguas Andinas, distribución eléctrica por zona</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>4.2 Competencia Perfecta — Gráfico P = CMg</h3>
+  <div class="chart-grid">
+    <div class="svg-card">
+      <h4>⚖️ Equilibrio en Competencia Perfecta</h4>
+      <svg viewBox="0 0 320 260" style="width:100%;max-height:240px">
+        <defs>
+          <marker id="arr5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#444"/>
+          </marker>
+        </defs>
+        <line x1="40" y1="230" x2="290" y2="230" stroke="#444" stroke-width="2" marker-end="url(#arr5)"/>
+        <line x1="40" y1="230" x2="40" y2="20"  stroke="#444" stroke-width="2" marker-end="url(#arr5)"/>
+        <text x="295" y="234" font-size="11" fill="#444">Q</text>
+        <text x="26"  y="14"  font-size="11" fill="#444">P</text>
+        <!-- Demanda = Precio de mercado (horizontal) -->
+        <line x1="55" y1="120" x2="275" y2="120" stroke="#2E75B6" stroke-width="2.5"/>
+        <text x="236" y="114" font-size="11" font-weight="700" fill="#2E75B6">D=P*=CMg</text>
+        <!-- Oferta empresa (CMg, pendiente positiva) -->
+        <path d="M 80,210 Q 155,120 240,45" stroke="#E67E22" stroke-width="2.5" fill="none"/>
+        <text x="222" y="58" font-size="11" font-weight="700" fill="#E67E22">S=CMg</text>
+        <!-- Equilibrio -->
+        <circle cx="180" cy="120" r="6" fill="#1B3A6B"/>
+        <line x1="40"  y1="120" x2="180" y2="120" stroke="#1B3A6B" stroke-dasharray="4,3"/>
+        <line x1="180" y1="230" x2="180" y2="120" stroke="#1B3A6B" stroke-dasharray="4,3"/>
+        <text x="44"  y="116" font-size="11" fill="#1B3A6B" font-weight="700">P*</text>
+        <text x="172" y="244" font-size="11" fill="#1B3A6B" font-weight="700">Q*</text>
+        <!-- ganancia normal -->
+        <text x="85" y="170" font-size="10" fill="#27AE60">Ganancia normal = 0 (LP)</text>
+        <text x="85" y="183" font-size="10" fill="#27AE60">P* = CMg → eficiencia</text>
+      </svg>
+      <p class="desc">En competencia perfecta la empresa es precio-aceptante: la demanda que enfrenta es horizontal (infinitamente elástica). Precio = Costo Marginal = máxima eficiencia.</p>
+    </div>
+
+    <div class="svg-card">
+      <h4>👑 Monopolio — Precio &gt; CMg</h4>
+      <svg viewBox="0 0 320 270" style="width:100%;max-height:250px">
+        <defs>
+          <marker id="arr6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#444"/>
+          </marker>
+        </defs>
+        <line x1="40" y1="240" x2="295" y2="240" stroke="#444" stroke-width="2" marker-end="url(#arr6)"/>
+        <line x1="40" y1="240" x2="40" y2="15"  stroke="#444" stroke-width="2" marker-end="url(#arr6)"/>
+        <text x="298" y="243" font-size="11" fill="#444">Q</text>
+        <text x="26"  y="13"  font-size="11" fill="#444">P</text>
+        <!-- Demanda mercado -->
+        <path d="M 65,30 Q 170,130 280,230" stroke="#2E75B6" stroke-width="2.5" fill="none"/>
+        <text x="255" y="185" font-size="11" font-weight="700" fill="#2E75B6">D</text>
+        <!-- IMg (ingreso marginal, más empinado que D) -->
+        <path d="M 65,30 Q 130,160 185,240" stroke="#9B59B6" stroke-width="2.5" fill="none" stroke-dasharray="6,3"/>
+        <text x="158" y="235" font-size="11" font-weight="700" fill="#9B59B6">IMg</text>
+        <!-- CMg -->
+        <path d="M 60,200 Q 150,120 270,70" stroke="#E67E22" stroke-width="2.5" fill="none"/>
+        <text x="253" y="68" font-size="11" font-weight="700" fill="#E67E22">CMg</text>
+        <!-- Qm (donde IMg=CMg) -->
+        <line x1="155" y1="240" x2="155" y2="148" stroke="#1B3A6B" stroke-dasharray="4,3"/>
+        <circle cx="155" cy="148" r="5" fill="#9B59B6"/>
+        <text x="148" y="252" font-size="10" fill="#9B59B6">Qm</text>
+        <!-- Pm (precio en D sobre Qm) -->
+        <line x1="40" y1="105" x2="155" y2="105" stroke="#C00000" stroke-dasharray="4,3"/>
+        <circle cx="155" cy="105" r="5" fill="#C00000"/>
+        <text x="44" y="101" font-size="10" fill="#C00000" font-weight="700">Pm</text>
+        <!-- Pc competencia -->
+        <line x1="40" y1="148" x2="155" y2="148" stroke="#27AE60" stroke-dasharray="4,3"/>
+        <text x="44" y="144" font-size="10" fill="#27AE60">Pc (comp.perf.)</text>
+        <!-- ganancia monopolio -->
+        <rect x="40" y="105" width="115" height="43" fill="#FDDEDE" opacity="0.5"/>
+        <text x="62" y="132" font-size="9" fill="#C00000" font-weight="700">Ganancia monopolio</text>
+        <text x="115" y="162" font-size="9" fill="#1B3A6B">↑ Pm &gt; CMg</text>
+      </svg>
+      <p class="desc">El monopolista maximiza utilidad donde IMg=CMg (Qm). Luego cobra el precio que la demanda tolera (Pm). Este precio es MAYOR al competitivo → ineficiencia y ganancia extraordinaria.</p>
+    </div>
+  </div>
+
+  <h3>4.3 Estrategias de Fijación de Precios</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Estrategia</th><th>Descripción</th><th>Cuándo usarla</th><th>Ejemplo Chile</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Penetración</strong></td><td>Precio bajo para ganar cuota de mercado rápido</td><td>Lanzamiento en mercado competitivo</td><td>Uber al entrar a Chile en 2014</td></tr>
+        <tr><td><strong>Descremado (Skimming)</strong></td><td>Precio alto al inicio; baja gradualmente</td><td>Innovación, sin competencia inicial</td><td>Lanzamiento iPhone / PlayStation</td></tr>
+        <tr><td><strong>Discriminación de precios</strong></td><td>Diferentes precios según disposición a pagar</td><td>Cuando puedes segmentar el mercado</td><td>LATAM: precio varía por anticipación y clase</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     5. EMPRENDIMIENTO
+══════════════════════════════════════════ -->
+<section class="module" id="emprendimiento">
+  <div class="module-header">
+    <div class="module-number">5</div>
+    <div class="module-title">
+      <h2>Módulo 5 — Emprendimiento e Innovación</h2>
+      <p>El motor del crecimiento económico moderno</p>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h4>🚀 Impacto del emprendimiento en la economía</h4>
+      <canvas id="chartEmprendimiento"></canvas>
+    </div>
+    <div class="chart-card">
+      <h4>🌱 Ecosistema emprendedor — Apoyos en Chile</h4>
+      <canvas id="chartEcosistema"></canvas>
+    </div>
+  </div>
+
+  <h3>5.1 Definiciones clave</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Concepto</th><th>Definición</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Emprendimiento</strong></td><td>Crear un nuevo negocio asumiendo riesgos para generar valor económico</td><td>Fintual, Cornershop, Betterfly</td></tr>
+        <tr><td><strong>Innovación</strong></td><td>Introducir nuevas ideas, productos o procesos que generan valor</td><td>NotCo usa IA para alimentos plant-based</td></tr>
+        <tr><td><strong>Startup</strong></td><td>Empresa nueva con modelo escalable, generalmente tecnológica</td><td>Khipu (pagos), Algramo (envases)</td></tr>
+        <tr><td><strong>Disrupción</strong></td><td>Innovación que transforma un mercado desplazando a empresas establecidas</td><td>Airbnb → hoteles; Spotify → tiendas música</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>5.2 Casos disruptivos globales</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Empresa</th><th>Sector afectado</th><th>Disrupción</th><th>Lección para emprendedores</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Airbnb</strong></td><td>Hotelería</td><td>Conectó propietarios con viajeros, sin intermediarios</td><td>La plataforma crea valor sin poseer activos</td></tr>
+        <tr><td><strong>Uber</strong></td><td>Transporte</td><td>Convirtió ciudadanos en proveedores de taxi</td><td>La tecnología crea oferta donde no existía</td></tr>
+        <tr><td><strong>Spotify</strong></td><td>Música</td><td>Reemplazó la venta de álbumes por suscripción</td><td>El modelo SaaS genera ingresos recurrentes</td></tr>
+        <tr><td><strong>NotCo</strong></td><td>Alimentación</td><td>IA para crear alimentos plant-based idénticos en sabor</td><td>La IA como ventaja competitiva sostenible</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     6. CASO NOTCO
+══════════════════════════════════════════ -->
+<section class="module" id="notco">
+  <div class="module-header">
+    <div class="module-number">6</div>
+    <div class="module-title">
+      <h2>Caso NotCo — Análisis Completo</h2>
+      <p>La startup chilena que llegó a ser unicornio</p>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-icon">🦄</div>
+    <div class="callout-body">
+      <strong>¿Qué es NotCo?</strong> Startup chilena fundada en 2015 en Santiago. Usa inteligencia artificial (algoritmo "Giuseppe") para analizar la estructura molecular de alimentos y combinar plantas que replican sabor y textura animales. Alcanzó valorización de USD >1.000 millones (unicornio) en 2021.
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h4>📊 Posicionamiento de NotCo en el mercado</h4>
+      <canvas id="chartNotco"></canvas>
+    </div>
+    <div>
+      <h3>Respuestas para la prueba</h3>
+      <div class="ejercicio">
+        <div class="ejercicio-header">❓ Pregunta 1: ¿En qué estructura de mercado compite NotMayo?</div>
+        <div class="ejercicio-body">
+          <div class="callout mint"><div class="callout-icon">✅</div><div class="callout-body"><strong>Respuesta: Competencia Monopolística</strong></div></div>
+          <ul class="bullets">
+            <li>Hay <strong>muchos competidores</strong>: Hellmann's, Kraft, marcas propias de supermercados</li>
+            <li>NotCo <strong>diferencia</strong> su producto: origen vegetal, IA, posicionamiento sustentable</li>
+            <li>Tiene <strong>algún poder de precio</strong> gracias a su diferenciación</li>
+            <li>Las barreras son bajas en mayonesa convencional, pero <strong>altas para replicar la tecnología IA</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ejercicio" style="margin-top:20px">
+    <div class="ejercicio-header">❓ Pregunta 2: Ventajas y desafíos de NotCo al fijar precios</div>
+    <div class="ejercicio-body">
+      <div class="chart-grid">
+        <div>
+          <h4 style="color:#27AE60">✅ Ventajas</h4>
+          <ul class="bullets">
+            <li>Diferenciación vegetal/sostenible permite precio premium</li>
+            <li>Segmento dispuesto a pagar más por opciones saludables</li>
+            <li>IA mejora continuamente la paridad de sabor</li>
+            <li>Menor dependencia de materias primas animales</li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="color:#C00000">❌ Desafíos</h4>
+          <ul class="bullets">
+            <li>Costos de I+D más altos por el uso de IA</li>
+            <li>Hellmann's/Unilever tiene enormes economías de escala</li>
+            <li>Segmento masivo tiene alta elasticidad precio</li>
+            <li>Costo de educar al consumidor sobre plant-based</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ejercicio" style="margin-top:16px">
+    <div class="ejercicio-header">❓ Pregunta 3: ¿Cómo mantiene NotCo su ventaja competitiva?</div>
+    <div class="ejercicio-body">
+      <ul class="bullets">
+        <li>Continuar desarrollando nuevos productos con IA: leche, carne, queso</li>
+        <li>Expandirse a nuevos mercados: Europa, Asia</li>
+        <li>Fortalecer propiedad intelectual: patentar procesos y algoritmos</li>
+        <li>Licenciar la tecnología "Giuseppe" como SaaS a otras empresas</li>
+        <li>Marketing de propósito: comunicar impacto ambiental positivo</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     7. HOJA DE FÓRMULAS
+══════════════════════════════════════════ -->
+<section class="module" id="formulas">
+  <div class="module-header">
+    <div class="module-number">7</div>
+    <div class="module-title">
+      <h2>Hoja de Fórmulas Rápidas</h2>
+      <p>Memoriza estas y practica 3 ejercicios de cada una</p>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <div>
+      <h3>Punto de Equilibrio</h3>
+      <div class="formula-box">
+        <div class="label">PE en unidades</div>
+        $$PE = \frac{CF}{PVU - CVU}$$
+      </div>
+      <div class="formula-box">
+        <div class="label">PE en ingresos</div>
+        $$PE_{(\$)} = PE_{(und.)} \times PVU$$
+      </div>
+      <div class="formula-box">
+        <div class="label">Margen de Contribución</div>
+        $$MC = PVU - CVU$$
+      </div>
+    </div>
+    <div>
+      <h3>Elasticidad</h3>
+      <div class="formula-box">
+        <div class="label">Fórmula general</div>
+        $$\varepsilon = \frac{\%\Delta Q}{\%\Delta P} = \frac{(Q_2-Q_1)/Q_1}{(P_2-P_1)/P_1}$$
+      </div>
+      <div class="formula-box">
+        <div class="label">Cambio en cantidad (desde ε)</div>
+        $$\%\Delta Q = \varepsilon \times \%\Delta P$$
+      </div>
+      <div class="formula-box">
+        <div class="label">Nueva cantidad</div>
+        $$Q_2 = Q_1 \times (1 + \%\Delta Q)$$
+      </div>
+    </div>
+  </div>
+
+  <h3>Tabla decisión de precio (para la prueba)</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>|ε|</th><th>Tipo</th><th>Si subo P → IT</th><th>Si bajo P → IT</th><th>Estrategia</th></tr></thead>
+      <tbody>
+        <tr><td class="td-good"><strong>|ε| &gt; 1</strong></td><td class="td-good"><strong>ELÁSTICA</strong></td><td class="td-bad">BAJA ↓</td><td class="td-good">SUBE ↑</td><td>BAJAR precio</td></tr>
+        <tr><td class="td-neu"><strong>|ε| = 1</strong></td><td class="td-neu">UNITARIA</td><td class="td-neu">Sin cambio</td><td class="td-neu">Sin cambio</td><td>Precio neutro</td></tr>
+        <tr><td class="td-teal"><strong>|ε| &lt; 1</strong></td><td class="td-teal"><strong>INELÁSTICA</strong></td><td class="td-good">SUBE ↑</td><td class="td-bad">BAJA ↓</td><td>SUBIR precio</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     8. PLAN DE ESTUDIO
+══════════════════════════════════════════ -->
+<section class="module" id="plan">
+  <div class="module-header">
+    <div class="module-number">8</div>
+    <div class="module-title">
+      <h2>Plan de Estudio para el Sábado</h2>
+      <p>Aplica la metacognición: distribuye, practica, recupera</p>
+    </div>
+  </div>
+
+  <div class="plan-grid">
+    <div class="plan-card c1">
+      <div class="day">📚 Día 1</div>
+      <div class="task">Módulos 1–2<br>Precios + Punto de Equilibrio<br><em>90 min</em></div>
+    </div>
+    <div class="plan-card c2">
+      <div class="day">📚 Día 2</div>
+      <div class="task">Módulo 3<br>Elasticidad + 3 ejercicios<br><em>90 min</em></div>
+    </div>
+    <div class="plan-card c3">
+      <div class="day">📚 Día 3</div>
+      <div class="task">Módulo 4<br>Estructuras + NotCo escrito<br><em>60 min</em></div>
+    </div>
+    <div class="plan-card c4">
+      <div class="day">📚 Día 4</div>
+      <div class="task">Módulo 5<br>Emprendimiento + repaso<br><em>60 min</em></div>
+    </div>
+    <div class="plan-card c5">
+      <div class="day">🔁 Viernes noche</div>
+      <div class="task">Repaso fórmulas + 1 ejercicio de cada tipo sin mirar notas<br><em>45 min</em></div>
+    </div>
+    <div class="plan-card c6">
+      <div class="day">☀️ Sábado mañana</div>
+      <div class="task">Solo revisar hoja de fórmulas. Desayuno + hidratación<br><em>20 min</em></div>
+    </div>
+  </div>
+
+  <h3>Checklist antes de entrar a la sala</h3>
+  <ul class="checklist">
+    <li>Sé la fórmula del PE y puedo resolver 3 ejercicios distintos sin ayuda</li>
+    <li>Sé calcular ε y tomar la decisión de precio (subir vs. bajar)</li>
+    <li>Puedo describir las 4 estructuras con ejemplos chilenos reales</li>
+    <li>Sé responder las 3 preguntas del caso NotCo con argumentos</li>
+    <li>Entiendo la diferencia entre desplazamiento de curva vs. movimiento sobre la curva</li>
+    <li>Puedo explicar qué es un emprendedor y qué impacto tiene en la economía</li>
+  </ul>
+
+  <div class="callout mint" style="margin-top:24px">
+    <div class="callout-icon">🎯</div>
+    <div class="callout-body">
+      <strong>El día de la prueba:</strong>
+      Lee el enunciado completo antes de responder. En cálculos, escribe TODOS los pasos (los pasos también dan puntos). En estructuras de mercado, siempre menciona un ejemplo chileno real. Si no recuerdas la fórmula exacta del PE, razona: "el nivel donde Ingresos = Costos Totales".
+    </div>
+  </div>
+</section>
+
+<footer>
+  DuocUC · Escuela de Administración y Negocios · Fundamentos de Economía · EA3 · 2025 | Con contexto económico real y fuentes: Mankiw (2017), BCCh, INE, OCDE
+</footer>
+
+</div><!-- /wrapper -->
+
+<!-- ══════════════════════════════════════════
+     CHARTS JavaScript
+══════════════════════════════════════════ -->
+<script>
+// Paleta
+const NAVY='#1B3A6B', BLUE='#2E75B6', TEAL='#007B83', GOLD='#C9A84C';
+const GREEN='#27AE60', RED='#C00000', ORANGE='#E67E22', PURPLE='#9B59B6';
+const LGRAY='#ECF0F1';
+
+// ── 0. Metacognición ─────────────────────
+new Chart(document.getElementById('chartMeta'), {
+  type:'radar',
+  data:{
+    labels:['Recuperación\nactiva','Práctica\nespaciada','Elaboración\n(enseñar)','Intercalado\nde temas','Práctica\nde tests'],
+    datasets:[{
+      label:'Eficacia comprobada (%)',
+      data:[95,90,85,80,92],
+      backgroundColor:'rgba(46,117,182,0.2)',
+      borderColor:BLUE, borderWidth:2,
+      pointBackgroundColor:BLUE
+    }]
+  },
+  options:{responsive:true,plugins:{legend:{display:false}},scales:{r:{beginAtZero:true,max:100,ticks:{stepSize:25}}}}
+});
+
+// ── 2. Gráfico PE ────────────────────────
+(function(){
+  const cf=5000,pvu=2,cvu=0.8;
+  const qs=Array.from({length:11},(_,i)=>i*500);
+  const ingresos=qs.map(q=>q*pvu);
+  const costoTotal=qs.map(q=>cf+q*cvu);
+  const costosFijos=qs.map(()=>cf);
+  new Chart(document.getElementById('chartPE'),{
+    type:'line',
+    data:{
+      labels:qs,
+      datasets:[
+        {label:'Ingresos Totales ($)',data:ingresos,borderColor:BLUE,borderWidth:3,fill:false,pointRadius:3},
+        {label:'Costo Total ($)',data:costoTotal,borderColor:RED,borderWidth:3,fill:false,pointRadius:3},
+        {label:'Costos Fijos ($)',data:costosFijos,borderColor:GOLD,borderWidth:2,fill:false,borderDash:[6,4],pointRadius:0},
+      ]
+    },
+    options:{
+      responsive:true,
+      plugins:{
+        legend:{position:'bottom'},
+        annotation:{
+          annotations:{
+            pe:{type:'line',xMin:4167,xMax:4167,borderColor:'#1B3A6B',borderWidth:2,borderDash:[6,3],
+              label:{content:'PE ≈ 4.167 unidades',enabled:true,position:'start',backgroundColor:NAVY,color:'white',font:{size:11}}}
+          }
+        }
+      },
+      scales:{
+        x:{title:{display:true,text:'Unidades vendidas (Q)'}},
+        y:{title:{display:true,text:'$ (pesos)'},beginAtZero:true}
+      }
+    }
+  });
+})();
+
+// ── 2b. PE Opciones ──────────────────────
+new Chart(document.getElementById('chartPEOpciones'),{
+  type:'bar',
+  data:{
+    labels:['Base\n(PE=200)','Opción A: Bajar PVU\n(PE=240)','Opción B: Bajar CVU\n(PE≈185)'],
+    datasets:[
+      {label:'Punto de Equilibrio (mesas)',data:[200,240,185],
+       backgroundColor:[BLUE,'#C00000',GREEN],borderRadius:8}
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:ctx=>`PE = ${ctx.raw} mesas`}}},
+    scales:{y:{beginAtZero:true,title:{display:true,text:'Unidades (mesas)'}}}
+  }
+});
+
+// ── 3. Elasticidad curvas ────────────────
+(function(){
+  const pr=Array.from({length:10},(_,i)=>i*10+10);
+  const elast=pr.map(p=>Math.max(0,100-p*0.5));
+  const inel=pr.map(p=>Math.max(0,80-p*0.15));
+  const unit=pr.map(p=>Math.max(0,120-p));
+  new Chart(document.getElementById('chartElasticidad'),{
+    type:'line',
+    data:{
+      labels:pr.map(p=>'$'+p),
+      datasets:[
+        {label:'Elástica |ε|>1',data:elast,borderColor:GREEN,borderWidth:2.5,fill:false,pointRadius:0},
+        {label:'Inelástica |ε|<1',data:inel,borderColor:RED,borderWidth:2.5,fill:false,pointRadius:0},
+        {label:'Unitaria |ε|=1',data:unit,borderColor:ORANGE,borderWidth:2,fill:false,borderDash:[5,3],pointRadius:0},
+      ]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{position:'bottom'}},
+      scales:{
+        x:{title:{display:true,text:'Precio (P)'}},
+        y:{title:{display:true,text:'Cantidad (Q)'},beginAtZero:true}
+      }
+    }
+  });
+})();
+
+// ── 3b. IT comparación ───────────────────
+(function(){
+  const prices=[45,47,49,50,51,53,55,57,59];
+  const q0=10000,eps_in=-0.8;
+  const itInelast=prices.map(p=>{
+    const dq=eps_in*((p-50)/50);
+    return p*(q0*(1+dq));
+  });
+  const p0r=10,q0r=500,eps_el=-1.5;
+  const pricesr=[8,8.5,9,9.5,10,10.5,11];
+  const itElast=pricesr.map(p=>{
+    const dq=eps_el*((p-p0r)/p0r);
+    return p*(q0r*(1+dq));
+  });
+  new Chart(document.getElementById('chartIT'),{
+    type:'line',
+    data:{
+      labels:prices.map(p=>'$'+p),
+      datasets:[
+        {label:'Zapatillas (Inelástica) — IT',data:itInelast,borderColor:BLUE,borderWidth:2.5,fill:false,yAxisID:'y'},
+      ]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{position:'bottom'},
+        title:{display:true,text:'Al subir precio, IT sube (inelástica)',font:{size:11}}},
+      scales:{
+        y:{title:{display:true,text:'IT ($)'}},
+        x:{title:{display:true,text:'Precio zapatillas'}}
+      }
+    }
+  });
+})();
+
+new Chart(document.getElementById('chartITComp'),{
+  type:'bar',
+  data:{
+    labels:['Zapatillas\nAntes ($50)','Zapatillas\nDespués ($55)','Restaurante\nAntes ($10)','Restaurante\nDespués ($9)'],
+    datasets:[{
+      label:'Ingresos Totales ($)',
+      data:[500000,506000,5000,5175],
+      backgroundColor:[BLUE,'#27AE60',ORANGE,'#27AE60'],
+      borderRadius:8
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{display:false}},
+    scales:{y:{title:{display:true,text:'Ingresos Totales ($)'}}}
+  }
+});
+
+// ── 4. Estructuras mercado ───────────────
+new Chart(document.getElementById('chartEstructuras'),{
+  type:'radar',
+  data:{
+    labels:['Poder\nde precio','N° empresas\n(inverso)','Ganancias\nextraordinarias','Barreras\nentrada','Diferenciación\nproducto'],
+    datasets:[
+      {label:'Comp. Perfecta',data:[0,100,0,0,0],backgroundColor:'rgba(39,174,96,.2)',borderColor:GREEN,borderWidth:2,pointBackgroundColor:GREEN},
+      {label:'Comp. Monopolística',data:[30,80,0,20,80],backgroundColor:'rgba(46,117,182,.15)',borderColor:BLUE,borderWidth:2,pointBackgroundColor:BLUE},
+      {label:'Oligopolio',data:[70,30,70,80,50],backgroundColor:'rgba(230,126,34,.15)',borderColor:ORANGE,borderWidth:2,pointBackgroundColor:ORANGE},
+      {label:'Monopolio',data:[100,5,100,100,100],backgroundColor:'rgba(192,0,0,.15)',borderColor:RED,borderWidth:2,pointBackgroundColor:RED},
+    ]
+  },
+  options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{r:{beginAtZero:true,max:100}}}
+});
+
+new Chart(document.getElementById('chartBarreras'),{
+  type:'bar',
+  data:{
+    labels:['Comp. Perfecta','Comp. Monopolística','Oligopolio','Monopolio'],
+    datasets:[
+      {label:'Barreras de entrada (0-10)',data:[0,2,7,10],backgroundColor:[GREEN,BLUE,ORANGE,RED],borderRadius:8},
+      {label:'Poder de mercado (0-10)',data:[0,3,7,10],backgroundColor:['rgba(39,174,96,.4)','rgba(46,117,182,.4)','rgba(230,126,34,.4)','rgba(192,0,0,.4)'],borderRadius:8},
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{position:'bottom'}},
+    scales:{y:{beginAtZero:true,max:11,title:{display:true,text:'Nivel (0-10)'}}}
+  }
+});
+
+// ── 5. Emprendimiento ────────────────────
+new Chart(document.getElementById('chartEmprendimiento'),{
+  type:'doughnut',
+  data:{
+    labels:['Creación de empleo','Crecimiento PIB','Mayor competencia','Innovación tecnológica','Reducción desempleo'],
+    datasets:[{data:[30,25,20,15,10],backgroundColor:[NAVY,BLUE,TEAL,GOLD,GREEN],borderWidth:2,borderColor:'white'}]
+  },
+  options:{responsive:true,plugins:{legend:{position:'bottom'}}}
+});
+
+new Chart(document.getElementById('chartEcosistema'),{
+  type:'bar',
+  data:{
+    labels:['CORFO','StartUp Chile','SERCOTEC','Garantías Estado','Capital privado VC'],
+    datasets:[{
+      label:'Aporte relativo al ecosistema (%)',
+      data:[35,25,20,12,8],
+      backgroundColor:[NAVY,BLUE,TEAL,GOLD,GREEN],borderRadius:8
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{display:false}},
+    scales:{y:{beginAtZero:true,max:40,title:{display:true,text:'% participación relativa'}}}
+  }
+});
+
+// ── 6. NotCo ─────────────────────────────
+new Chart(document.getElementById('chartNotco'),{
+  type:'bubble',
+  data:{
+    datasets:[
+      {label:'NotMayo',data:[{x:60,y:55,r:18}],backgroundColor:'rgba(0,123,131,.7)',borderColor:TEAL},
+      {label:"Hellmann's",data:[{x:85,y:30,r:28}],backgroundColor:'rgba(230,126,34,.6)',borderColor:ORANGE},
+      {label:'Marca propia supermercado',data:[{x:90,y:10,r:22}],backgroundColor:'rgba(192,0,0,.5)',borderColor:RED},
+      {label:'Otras veganas',data:[{x:40,y:70,r:10}],backgroundColor:'rgba(39,174,96,.6)',borderColor:GREEN},
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{position:'bottom'}},
+    scales:{
+      x:{title:{display:true,text:'Cuota de mercado →'},min:20,max:110},
+      y:{title:{display:true,text:'↑ Diferenciación / Premium'},min:0,max:90}
+    }
+  }
+});
+</script>
+</body>
+</html>
